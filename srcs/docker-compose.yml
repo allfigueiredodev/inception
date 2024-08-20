@@ -44,6 +44,12 @@ services:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
+        WP_COMMOM_USER: ${WP_COMMOM_USER}
+        WP_COMMOM_USER_EMAIL: ${WP_COMMOM_USER_EMAIL}
+        WP_COMMOM_USER_PASS: ${WP_COMMOM_USER_PASS}
+        WP_ADM: ${WP_ADM}
+        WP_ADM_EMAIL: ${WP_ADM_EMAIL}
+        WP_ADM_PASS: ${WP_ADM_PASS}
     container_name: wordpress
     networks:
       - inception
