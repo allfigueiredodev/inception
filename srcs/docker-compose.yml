@@ -15,8 +15,8 @@ services:
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp-volume:/var/www/
-    restart: on-failure
+      - wp-volume:/var/www/html/
+    restart: always
 
   mariadb:
     build:
@@ -34,7 +34,7 @@ services:
       - "3306:3306"
     volumes:
       - db-volume:/var/lib/mysql
-    restart: on-failure
+    restart: always
 
   wordpress:
     build:
@@ -51,22 +51,26 @@ services:
         WP_ADM_EMAIL: ${WP_ADM_EMAIL}
         WP_ADM_PASS: ${WP_ADM_PASS}
     container_name: wordpress
+    ports:
+      - "9000:9000"
     networks:
       - inception
     depends_on:
       - mariadb
-    restart: on-failure
+    restart: always
     volumes:
-      - wp-volume:/var/www/
+      - wp-volume:/var/www/html/
 
 volumes:
   wp-volume:
+    driver: local
     driver_opts:
       o: bind
       type: none
       device: /home/${USER}/data/wordpress
 
   db-volume:
+    driver: local
     driver_opts:
       o: bind
       type: none

@@ -25,23 +25,25 @@ RUN apk update && apk upgrade && apk add --no-cache \
     ${PHP_VERSION}-phar \
     wget \
     unzip && \
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
+    sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" \
       /etc/${PHP_VERSION}/php-fpm.d/www.conf && \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
       /etc/${PHP_VERSION}/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
       /etc/${PHP_VERSION}/php-fpm.d/www.conf && \
     rm -f /var/cache/apk/*
-WORKDIR /var/www
+WORKDIR /var/www/html/
 RUN wget https://wordpress.org/latest.zip && \
     unzip latest.zip && \
     cp -rf wordpress/* . && \
     rm -rf wordpress latest.zip
-# RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
-    # chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 COPY ./requirements/wordpress/conf/wp-config-create.sh .
-# COPY ./requirements/wordpress/conf/set_initial_accounts.sh .
+COPY ./requirements/wordpress/conf/set_initial_accounts.sh .
 RUN sh wp-config-create.sh && rm wp-config-create.sh && \
-    # sh set_initial_accounts.sh && rm set_initial_accounts.sh && \
-    chmod -R 0777 wp-content/
+    sh set_initial_accounts.sh && rm set_initial_accounts.sh && \
+    chmod -R 0777 wp-content && \
+    wp core download --allow-root --path=/var/www/html
+EXPOSE 9000
 CMD ["/usr/sbin/php-fpm83", "-F"]
