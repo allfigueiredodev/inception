@@ -5,4 +5,5 @@ if [ ! -d "/home/${USER}/data" ]; then
         mkdir ~/data/wordpress
         mkdir ~/var/
         mkdir ~/var/www/
+        mkdir ~/var/www/wordpress
 fi
