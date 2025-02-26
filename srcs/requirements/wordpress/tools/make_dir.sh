@@ -1,9 +1,0 @@
-#!/bin/bash
-if [ ! -d "/home/${USER}/data" ]; then
-        mkdir ~/data
-        mkdir ~/data/mariadb
-        mkdir ~/data/wordpress
-        mkdir ~/var/
-        mkdir ~/var/www/
-        mkdir ~/var/www/wordpress
-fi
