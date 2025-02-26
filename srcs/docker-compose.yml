@@ -64,7 +64,7 @@ services:
       #   condition: service_healthy
     restart: always
     volumes:
-      - wp-volume:/var/www/wordpress
+      - wp-volume:/var/www/html
     env_file:
       - .env
 
@@ -88,7 +88,7 @@ services:
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools:/etc/nginx/ssl/
-      - wp-volume:/var/www/wordpress
+      - wp-volume:/var/www/html
     restart: always
     env_file:
       - .env
@@ -99,14 +99,14 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/wordpress
+      device: /home/${LOGIN}/data/wordpress
 
   db-volume:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/mariadb
+      device: /home/${LOGIN}/data/mariadb
 
 networks:
     inception:

@@ -7,6 +7,6 @@ RUN openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 \
 -out /etc/ssl/certs/certificate.crt \
 -subj "/C=BR/ST=SP/L=Sao Paulo/O=42sp/CN=aperis-p.42.fr"
 
-# EXPOSE 443
+EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

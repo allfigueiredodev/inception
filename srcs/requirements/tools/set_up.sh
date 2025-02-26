@@ -1,13 +1,15 @@
 #!/bin/bash
 if [ ! -d "${VOLUMES_PATH}" ]; then
         echo "Creating data folder"
+        echo "TESTTEEEE"
+        sudo chmod -R 0777 /home
         mkdir -p ${VOLUMES_PATH}/mariadb
         mkdir -p ${VOLUMES_PATH}/wordpress
 fi
 
-if [ ! -d "/home/${USER}/var" ]; then
+if [ ! -d "/home/${LOGIN}/var" ]; then
         echo "Creating var folder"
-        mkdir -p ~/${USER}/var/www/html
+        mkdir -p ~/var/www/html
 fi
 
 if ! grep -q "localhost ${LOGIN}.42.fr" /etc/hosts; then \
