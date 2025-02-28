@@ -11,19 +11,13 @@ services:
         DB_PASS: ${DB_PASS}
         DB_ROOT: ${DB_ROOT}
     container_name: mariadb
-    # healthcheck:
-    #   test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 3
-    #   start_period: 60s
     networks:
       - inception
     ports:
       - "3306:3306"
     volumes:
       - db-volume:/var/lib/mysql
-    restart: always
+    restart: on-failure
     env_file:
       - .env
 
@@ -42,17 +36,6 @@ services:
         WP_ADM: ${WP_ADM}
         WP_ADM_EMAIL: ${WP_ADM_EMAIL}
         WP_ADM_PASS: ${WP_ADM_PASS}
-    # healthcheck:
-    #   test: ["CMD", "curl -f http://localhost:3306 || exit 1"]
-    #   interval: 5s
-    #   timeout: 10s
-    #   retries: 5
-    # healthcheck:
-    #   test: timeout 10s bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 3
-    #   start_period: 90s
     container_name: wordpress
     ports:
       - "9000:9000"
@@ -60,9 +43,7 @@ services:
       - inception
     depends_on:
       - mariadb
-      # mariadb:
-      #   condition: service_healthy
-    restart: always
+    restart: on-failure
     volumes:
       - wp-volume:/var/www/html
     env_file:
@@ -76,20 +57,14 @@ services:
     depends_on:
       - wordpress
       - mariadb
-    # healthcheck:
-    #   test: ["CMD-SHELL", "curl -f https://localhost || exit 1"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 5
     networks:
       - inception
     ports:
       - "443:443"
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools:/etc/nginx/ssl/
       - wp-volume:/var/www/html
-    restart: always
+    restart: on-failure
     env_file:
       - .env
 
