@@ -52,9 +52,6 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
-#Create PHP symlink
-RUN ln -s /usr/bin/${PHP_VERSION} /usr/bin/php
-
 #Download WP core
 RUN wget https://wordpress.org/latest.zip && \
     unzip latest.zip
@@ -75,5 +72,4 @@ RUN sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" \
 #Let the 9000 port exposed
 EXPOSE 9000
 
-#Run PHP and set wordpress up
-CMD ["sh", "-c", "/usr/sbin/php-fpm83 -F", "&&", "sh", "-c", "./my_script.sh" ]
+ENTRYPOINT ["ash", "-f", "./my_script.sh"]

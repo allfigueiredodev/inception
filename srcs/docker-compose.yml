@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   mariadb:
@@ -13,11 +13,9 @@ services:
     container_name: mariadb
     networks:
       - inception
-    ports:
-      - "3306:3306"
     volumes:
       - db-volume:/var/lib/mysql
-    restart: on-failure
+    restart: always
     env_file:
       - .env
 
@@ -37,18 +35,15 @@ services:
         WP_ADM_EMAIL: ${WP_ADM_EMAIL}
         WP_ADM_PASS: ${WP_ADM_PASS}
     container_name: wordpress
-    ports:
-      - "9000:9000"
     networks:
       - inception
     depends_on:
       - mariadb
-    restart: on-failure
+    restart: always
     volumes:
       - wp-volume:/var/www/html
     env_file:
       - .env
-    init: true
 
   nginx:
     build:
@@ -65,10 +60,9 @@ services:
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - wp-volume:/var/www/html
-    restart: on-failure
+    restart: always
     env_file:
       - .env
-    init: true
 
 volumes:
   wp-volume:

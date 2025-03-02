@@ -1,4 +1,4 @@
-name = inception
+name=inception
 LOGIN=aperis-p
 VOLUMES_PATH=/home/${LOGIN}/data
 
