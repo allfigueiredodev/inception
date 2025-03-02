@@ -48,6 +48,7 @@ services:
       - wp-volume:/var/www/html
     env_file:
       - .env
+    init: true
 
   nginx:
     build:
@@ -67,6 +68,7 @@ services:
     restart: on-failure
     env_file:
       - .env
+    init: true
 
 volumes:
   wp-volume:
